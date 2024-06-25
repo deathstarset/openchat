@@ -1,8 +1,9 @@
 <script lang="ts">
-  import Products from "./lib/Products.svelte";
-  import Chat from "./lib/Chat.svelte";
+  import Main from "./lib/Main.svelte";
+  import Sidebar from "./lib/Sidebar.svelte";
 </script>
 
-<main class="flex flex-col items-center justify-center h-screen">
-  <Chat />
+<main class="flex h-screen">
+  <Sidebar />
+  <Main />
 </main>

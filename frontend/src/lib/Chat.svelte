@@ -42,32 +42,34 @@
   }
 </script>
 
-<div class="h-3/4 w-3/4 bg-slate-100 rounded-xl">
-  <div class="h-[90%] p-2 overflow-y-auto rounded-xl">
+<div class="bg-slate-100 h-[92vh] flex flex-col items-center">
+  <div class="h-[89%] p-2 overflow-y-auto rounded-xl w-1/2">
     {#each messages as message}
       {#if message.type === "prompt"}
-        <div class="py-2 px-4 my-2 bg-slate-200 rounded-3xl w-fit">
+        <div class="py-2 my-2 px-4 bg-slate-200 rounded-3xl w-fit">
           {message.content}
         </div>
       {/if}
       {#if message.type === "response"}
-        <div class="pl-4">{message.content}</div>
+        <div class="">{message.content}</div>
       {/if}
     {/each}
     {#if loading}
       <p>Loading....</p>
     {/if}
   </div>
-  <div class="w-full bg-red-200 flex h-[10%] rounded-b-xl">
+  <div class="flex w-1/2 gap-2">
     <input
       type="text"
       placeholder="Prompt"
       bind:value={message}
-      class="w-3/4 rounded-bl-xl bg-slate-100 px-2"
+      class="px-2 w-full py-3 rounded border"
     />
     <button
-      class="bg-black text-white font-medium rounded-br-xl hover:bg-black/85 transition-colors w-1/4"
-      on:click={(e) => getResponse(e)}>Get Response</button
+      class=" hover:bg-black/85 transition-colors text-white bg-black rounded p-3 grid place-items-center w-16"
+      on:click={(e) => getResponse(e)}
+    >
+      <ion-icon name="send-outline"></ion-icon></button
     >
   </div>
 </div>
