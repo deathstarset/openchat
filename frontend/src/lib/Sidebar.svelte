@@ -2,7 +2,7 @@
 
 <div class="h-screen min-w-72 border-r">
   <div class="px-2 py-3 border-b">
-    <img src="/public/logo.png" alt="" class="h-10 w-10" />
+    <img src="/logo.png" alt="" class="h-10 w-10" />
   </div>
   <div class="p-2 flex flex-col gap-3">
     <button
