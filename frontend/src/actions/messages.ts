@@ -38,7 +38,6 @@ export async function createBotMessage(messageInfo: AddMessage) {
           content: aiResponse.response,
           sender: messageInfo.sender,
         });
-        console.log(botMessage);
         conversationStore.update((current) => ({
           ...current,
           loading: false,

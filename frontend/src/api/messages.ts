@@ -13,7 +13,7 @@ export async function getMessagesByConvo(convoId: string): Promise<Message[]> {
     const response = await apiClient.get(
       `/api/v1/messages?convo_id=${convoId}`
     );
-    return response.data;
+    return response.data.messages;
   } catch (error) {
     throw new Error((error as AxiosError).message);
   }

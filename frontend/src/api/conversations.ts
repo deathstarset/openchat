@@ -10,9 +10,17 @@ const apiClient = axios.create({
 export async function getConversations(): Promise<Conversation[]> {
   try {
     const response = await apiClient.get("/api/v1/conversations");
-    return response.data;
+    return response.data.conversations;
   } catch (error) {
     const axiosError = error as AxiosError;
     throw new Error(axiosError.message);
+  }
+}
+export async function createConversation(): Promise<Conversation> {
+  try {
+    const response = await apiClient.post("/api/v1/conversations");
+    return response.data.conversation;
+  } catch (error) {
+    throw new Error((error as AxiosError).message);
   }
 }

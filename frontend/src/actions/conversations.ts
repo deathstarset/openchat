@@ -1,14 +1,15 @@
 import { conversationsStore } from "../store";
-import { getConversations } from "../api/conversations";
+import { createConversation, getConversations } from "../api/conversations";
 import { getMessagesByConvo } from "../api/messages";
 import { conversationStore } from "../store";
+import { navigate } from "svelte-routing";
 
 export async function loadConversations() {
   conversationsStore.set({ data: null, loading: true, error: null });
   try {
-    const data = await getConversations();
+    const conversations = await getConversations();
     conversationsStore.set({
-      data: data.conversations,
+      data: conversations,
       loading: false,
       error: null,
     });
@@ -29,10 +30,10 @@ export async function loadConversation(convo_id: string) {
     error: null,
   });
   try {
-    const data = await getMessagesByConvo(convo_id);
+    const messages = await getMessagesByConvo(convo_id);
     conversationStore.set({
       conversationId: convo_id,
-      messages: data.messages,
+      messages: messages,
       loading: false,
       error: null,
     });
@@ -43,5 +44,28 @@ export async function loadConversation(convo_id: string) {
       loading: false,
       error: (error as Error).message,
     });
+  }
+}
+
+export async function addConversation() {
+  conversationsStore.update((current) => ({
+    ...current,
+    loading: true,
+  }));
+  try {
+    const conversation = await createConversation();
+    conversationsStore.update((current) => ({
+      ...current,
+      data: [...current.data, conversation],
+      loading: false,
+    }));
+    navigate(`/conversations/${conversation.id}`);
+  } catch (error) {
+    conversationsStore.update((current) => ({
+      ...current,
+      data: null,
+      loading: false,
+      error: (error as Error).message,
+    }));
   }
 }

@@ -7,6 +7,7 @@
   import { afterUpdate } from "svelte";
   export let id: string;
   function scrollToBottom() {
+    console.log("Hello world");
     const container = document.getElementById("message-container");
     if (container) {
       container.scrollTop = container.scrollHeight;
