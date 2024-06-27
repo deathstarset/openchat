@@ -19,10 +19,23 @@ enum Sender {
   user = "user",
   bot = "bot",
 }
+
 type Message = {
   id: string;
   conversationId: string;
   content: string;
   sender: Sender;
   createdAt: Date;
+};
+type AddMessage = {
+  conversationId: string;
+  content: string;
+  sender: Sender;
+};
+
+type AiResponse = {
+  created_at: Date;
+  done: boolean;
+  model: string;
+  response: string;
 };

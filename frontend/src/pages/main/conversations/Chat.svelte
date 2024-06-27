@@ -1,5 +1,14 @@
 <script lang="ts">
-  let message = "";
+  import { conversationStore } from "../../../store";
+  import { addMessage } from "../../../api/messages";
+  import { createMessage } from "../../../actions/messages";
+  import AddMessage from "../messages/AddMessage.svelte";
+  let userMessage = "";
+  let conversationId: string | null = null;
+  conversationStore.subscribe((value) => {
+    conversationId = value.conversationId;
+  });
+  /* let message = "";
   let messages: ChatChunk[] = [];
   let loading = false;
   const URL = "http://127.0.0.1:8000";
@@ -39,37 +48,22 @@
       }
     } catch (error) {}
     console.log(messages);
-  }
+  } */
 </script>
 
 <div class="bg-slate-100 h-[92vh] flex flex-col items-center">
-  <div class="h-[89%] p-2 overflow-y-auto rounded-xl w-1/2">
-    {#each messages as message}
-      {#if message.type === "prompt"}
-        <div class="py-2 my-2 px-4 bg-slate-200 rounded-3xl w-fit">
-          {message.content}
-        </div>
+  <div class="h-[89%] p-2 overflow-y-auto w-1/2">
+    <div>
+      {#if $conversationStore.messages && conversationId}
+        <p>{conversationId}</p>
+        {#each $conversationStore.messages as message}
+          <p>{message.content}</p>
+        {/each}
+        {#if $conversationStore.loading}
+          <p>Loading....</p>
+        {/if}
+        <AddMessage {conversationId} />
       {/if}
-      {#if message.type === "response"}
-        <div class="">{message.content}</div>
-      {/if}
-    {/each}
-    {#if loading}
-      <p>Loading....</p>
-    {/if}
-  </div>
-  <div class="flex w-1/2 gap-2">
-    <input
-      type="text"
-      placeholder="Prompt"
-      bind:value={message}
-      class="px-2 w-full py-3 rounded border"
-    />
-    <button
-      class=" hover:bg-black/85 transition-colors text-white bg-black rounded p-3 grid place-items-center w-16"
-      on:click={(e) => getResponse(e)}
-    >
-      <ion-icon name="send-outline"></ion-icon></button
-    >
+    </div>
   </div>
 </div>

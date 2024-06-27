@@ -5,9 +5,12 @@ from app.services.messages import (
     find_messages,
     remove_message,
     add_message,
+    find_message_by_convo_id,
 )
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from app.schemas.messages import CreateMessage
+from typing import Optional
+from uuid import UUID
 
 router = APIRouter()
 
@@ -21,8 +24,13 @@ async def create_message(
 
 
 @router.get("")
-async def get_messages(db: AsyncSession = Depends(get_db)):
-    messages = await find_messages(db)
+async def get_messages(
+    convo_id: Optional[UUID] = Query(None), db: AsyncSession = Depends(get_db)
+):
+    if convo_id is None:
+        messages = await find_messages(db)
+    else:
+        messages = await find_message_by_convo_id(convo_id, db)
     return {"messages": messages}
 
 

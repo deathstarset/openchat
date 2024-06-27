@@ -3,6 +3,7 @@ from app.db.models.messages import Message
 from sqlalchemy.future import select
 from app.schemas.messages import CreateMessage
 from fastapi import HTTPException
+from uuid import UUID
 
 
 async def add_message(create_message: CreateMessage, db: AsyncSession):
@@ -27,6 +28,12 @@ async def find_message_by_id(id: str, db: AsyncSession):
 
 async def find_messages(db: AsyncSession):
     result = await db.execute(select(Message))
+    messages = result.scalars().all()
+    return messages
+
+
+async def find_message_by_convo_id(id: UUID, db: AsyncSession):
+    result = await db.execute(select(Message).filter(Message.conversation_id == id))
     messages = result.scalars().all()
     return messages
 
