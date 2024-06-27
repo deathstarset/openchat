@@ -38,6 +38,16 @@ async def find_message_by_convo_id(id: UUID, db: AsyncSession):
     return messages
 
 
+async def edit_message(id: str, edit_message: CreateMessage, db: AsyncSession):
+    message = await find_message_by_id(id, db)
+    message.conversation_id = edit_message.conversation_id
+    message.content = edit_message.content
+    message.sender = edit_message.sender
+    await db.commit()
+    await db.refresh(message)
+    return message
+
+
 async def remove_message(id: str, db: AsyncSession):
     message = await find_message_by_id(id, db)
     await db.delete(message)

@@ -1,5 +1,5 @@
 import { getLlmResponse } from "../api/llm";
-import { addMessage } from "../api/messages";
+import { addMessage, editMessage } from "../api/messages";
 import { conversationStore } from "../store";
 
 export async function createMessage(messageInfo: AddMessage) {
@@ -23,6 +23,7 @@ export async function createMessage(messageInfo: AddMessage) {
 export async function createBotMessage(messageInfo: AddMessage) {
   let botResponseAdded = false;
   let messageId: string = "";
+  let content: string = "";
   conversationStore.update((current) => ({
     ...current,
     loading: true,
@@ -48,13 +49,14 @@ export async function createBotMessage(messageInfo: AddMessage) {
               id: botMessage.id,
               conversationId: messageInfo.conversationId,
               content: botMessage.content,
+              sender: botMessage.sender,
             },
           ],
         }));
+        content += botMessage.content;
         botResponseAdded = true;
         messageId = botMessage.id;
       } else {
-        console.log(messageId);
         conversationStore.update((current) => ({
           ...current,
           loading: false,
@@ -69,9 +71,20 @@ export async function createBotMessage(messageInfo: AddMessage) {
             return message;
           }),
         }));
+        content += aiResponse.response;
       }
     }
   } catch (error) {
     console.error("Stream error:", error);
+  } finally {
+    try {
+      const botMessage = await editMessage(messageId, {
+        conversationId: messageInfo.conversationId,
+        content: content,
+        sender: messageInfo.sender,
+      });
+    } catch (error) {
+      console.error("Stream error:", error);
+    }
   }
 }

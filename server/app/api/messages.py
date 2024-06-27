@@ -6,6 +6,7 @@ from app.services.messages import (
     remove_message,
     add_message,
     find_message_by_convo_id,
+    edit_message,
 )
 from fastapi import APIRouter, Depends, Query
 from app.schemas.messages import CreateMessage
@@ -44,3 +45,11 @@ async def get_message(id: str, db: AsyncSession = Depends(get_db)):
 async def delete_message(id: str, db: AsyncSession = Depends(get_db)):
     await remove_message(id, db)
     return {"message": "Message Deleted Succefully"}
+
+
+@router.put("/{id}")
+async def update_message(
+    update_message: CreateMessage, id: str, db: AsyncSession = Depends(get_db)
+):
+    message = await edit_message(id, update_message, db)
+    return {"message": message}

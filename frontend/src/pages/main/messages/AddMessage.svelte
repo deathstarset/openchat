@@ -1,6 +1,5 @@
 <script lang="ts">
   import { createBotMessage, createMessage } from "../../../actions/messages";
-  import { conversationStore } from "../../../store";
   let userMessage: string = "";
   export let conversationId: string;
   enum Sender {
@@ -9,7 +8,7 @@
   }
 </script>
 
-<div class="flex w-1/2 gap-2">
+<div class="flex w-1/2 gap-2 mt-5">
   <input
     type="text"
     placeholder="Prompt"

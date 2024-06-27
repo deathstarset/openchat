@@ -32,8 +32,18 @@ export async function addMessage(messageInfo: AddMessage): Promise<Message> {
   }
 }
 
-export async function editMessage(): Promise<Message> {
+export async function editMessage(
+  id: string,
+  message_info: AddMessage
+): Promise<Message> {
   try {
-    const response = await apiClient.put;
-  } catch (error) {}
+    const response = await apiClient.put(`api/v1/messages/${id}`, {
+      conversation_id: message_info.conversationId,
+      content: message_info.content,
+      sender: message_info.sender,
+    });
+    return response.data.message;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
 }

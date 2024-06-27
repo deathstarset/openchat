@@ -1,9 +1,18 @@
 <script lang="ts">
-  import Main from "./pages/main/Main.svelte";
   import Sidebar from "./pages/main/Sidebar.svelte";
+  import Nav from "./pages/main/Nav.svelte";
+  import Chat from "./pages/main/conversations/Chat.svelte";
+  import { Router, Route } from "svelte-routing";
 </script>
 
-<main class="flex h-screen">
-  <Sidebar />
-  <Main />
-</main>
+<Router>
+  <div class="flex h-screen">
+    <Sidebar />
+    <div class="w-full h-full">
+      <Nav />
+      <Route path="/conversations/:id" let:params>
+        <Chat id={params.id} />
+      </Route>
+    </div>
+  </div>
+</Router>
