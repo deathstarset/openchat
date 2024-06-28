@@ -1,0 +1,9 @@
+.venv
+.mypy_cache
+.git
+.gitignore
+.dockerignore
+Dockerfile
+**/__pycache__/
+.ruff_cache
+.env.local

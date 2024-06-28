@@ -2,7 +2,11 @@ from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+env = os.getenv("ENV", "local")
+if env == "docker":
+    load_dotenv(".env.prod")
+else:
+    load_dotenv(".env.local")
 
 
 class Settings(BaseSettings):

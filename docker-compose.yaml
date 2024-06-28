@@ -10,6 +10,27 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  server:
+    build: ./server
+    container_name: openchat_server
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+      - ENV=docker
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        MODE: docker
+    container_name: openchat_frontend
+    ports:
+      - "4173:4173"
+    restart: always
+    depends_on:
+      - server
 
 volumes:
   postgres_data:

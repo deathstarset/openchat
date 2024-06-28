@@ -1,16 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from starlette.responses import StreamingResponse
 import requests
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import conversations
 from app.api import messages
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.api.dependencies.db_session import get_db
+from sqlalchemy import select
 
 app = FastAPI()
 
 OLLAMA_BASE = "http://localhost:11434"
 
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173", "http://localhost:4173"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,6 +30,12 @@ class Prompt(BaseModel):
 
 app.include_router(conversations.router, prefix="/api/v1/conversations")
 app.include_router(messages.router, prefix="/api/v1/messages")
+
+
+@app.get("/api/v1/check_db")
+async def check(db: AsyncSession = Depends(get_db)):
+    await db.execute(select(1))
+    return {"message": "Database connection successful"}
 
 
 @app.post("/api/v1/generate")
