@@ -11,6 +11,7 @@ else:
 
 class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL") or ""
+    OLLAMA_URL: str = os.getenv("LLM_URL") or ""
 
 
 settings = Settings()

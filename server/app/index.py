@@ -8,12 +8,17 @@ from app.api import messages
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.dependencies.db_session import get_db
 from sqlalchemy import select
+from app.config.settings import settings
 
 app = FastAPI()
 
-OLLAMA_BASE = "http://localhost:11434"
+OLLAMA_BASE = settings.OLLAMA_URL
 
-origins = ["http://localhost:5173", "http://localhost:4173"]
+origins = [
+    "http://localhost:5173",
+    "http://localhost:4173",
+    "http://172.27.0.4:4173/",
+]
 
 app.add_middleware(
     CORSMiddleware,

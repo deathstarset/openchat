@@ -24,7 +24,7 @@ services:
     build:
       context: ./frontend
       args:
-        MODE: docker
+        MODE: prod
     container_name: openchat_frontend
     ports:
       - "4173:4173"
